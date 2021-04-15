@@ -8,7 +8,7 @@ namespace Heap
 {
     public class BinaryHeap<T>
     {
-        public int HeapSize { get; set; }
+        public int Count { get; set; }
         public int Capacity { get; set; }
         private T[] Heap { get; set; }
         private IComparer<T> Comparer { get; set; }
@@ -20,19 +20,20 @@ namespace Heap
         public BinaryHeap(ICollection<T> collection, IComparer<T> comparer)
         {
             collection.CopyTo(Heap, 0);
-            HeapSize = Heap.Length;
-            Capacity = (int)Math.Pow(2, Math.Ceiling(Math.Log(HeapSize, 2)));
+            Count = Heap.Length;
+            Capacity = (int)Math.Pow(2, Math.Ceiling(Math.Log(Count, 2)));
             Comparer = comparer;
         }
         public BinaryHeap(int capacity, IComparer<T> comparer)
         {
             Capacity = capacity;
+            Comparer = comparer;
         }
 
 
-        public void BuildHeap(T[] array)
+        private void BuildHeap(T[] array)
         {
-            for (var i = (HeapSize - 1) / 2; i >= 0; i--)
+            for (var i = (Count - 1) / 2; i >= 0; i--)
             {
                 Heapify(i);
             }
@@ -44,9 +45,9 @@ namespace Heap
             var left = 2 * index + 1;
             var right = 2 * index + 2;
             var largest = index;
-            if (left < HeapSize && Comparer.Compare(Heap[left], Heap[index]) > 0)
+            if (left < Count && Comparer.Compare(Heap[left], Heap[index]) > 0)
             { largest = left; }
-            if (right < HeapSize && Comparer.Compare(Heap[right], Heap[largest]) > 0)
+            if (right < Count && Comparer.Compare(Heap[right], Heap[largest]) > 0)
             { largest = right; }
 
             if (largest == index) return;
